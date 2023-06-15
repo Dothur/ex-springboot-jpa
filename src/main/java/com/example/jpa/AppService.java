@@ -1,9 +1,14 @@
 package com.example.jpa;
 
+import com.example.jpa.dto.StudentDto;
 import com.example.jpa.entities.StudentEntity;
 import com.example.jpa.repos.StudentRepository;
+import org.aspectj.weaver.ast.Literal;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,13 +64,26 @@ public class AppService {
         // 2. 결과가 null 이 되었을 경우
         else {
             System.out.println("no result");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-//        System.out.println(this.studentRepository.findById(id));
     }
 
     // READ ALL
-    public void readStudentAll(){
+//    public List<StudentEntity> readStudentAll(){
+    public List<StudentDto> readStudentAll(){
         System.out.println(this.studentRepository.findAll());
+        List<StudentEntity> studentEntityList = this.studentRepository.findAll();
+
+        List<StudentDto> studentDtoList = new ArrayList<>();
+        for (StudentEntity studentEntity: this.studentRepository.findAll()){
+            StudentDto studentDto = new StudentDto();
+            studentDto.setId(studentEntity.getId());
+            studentDto.setName(studentEntity.getName());
+            studentDto.setEmail(studentEntity.getEmail());
+            studentDtoList.add(studentDto);
+        }
+//        return studentEntityList;
+        return studentDtoList;
     }
 
     // UPDATE
