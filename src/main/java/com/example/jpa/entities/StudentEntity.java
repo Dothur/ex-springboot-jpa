@@ -5,18 +5,21 @@ CREATE TABLE students (
     name TEXT,
     age INTEGER,
     phone TEXT,
-    email TEXT
+    email TEXT,
+    created_at timestamp default (datetime('now')
 );
  */
 
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.Instant;
+
 @Data
 // db 의 테이블로써 하고싶다면?
 @Entity // 데이터베이스 테이블의 레코드를 나타냄
 @Table(name = "students")
-public class StudentEntity {
+public class StudentEntity extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,4 +32,6 @@ public class StudentEntity {
 //    @Column(unique = true)
     private String phone;
     private String email;
+
+    private Instant createdAt;
 }
